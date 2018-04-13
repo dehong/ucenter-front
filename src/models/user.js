@@ -1,20 +1,41 @@
-import { query as queryUsers, queryCurrent } from '../services/user';
+import { query as queryUsers, removeRule, addRule, queryCurrent } from '../services/user';
 
 export default {
   namespace: 'user',
 
   state: {
-    list: [],
     currentUser: {},
+    data: {
+      list: [],
+      pagination: {},
+    },
   },
 
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
+    *fetch({ payload }, { call, put }){
+      const response = yield call(queryUsers,payload);
+      console.info("response",response);
       yield put({
         type: 'save',
-        payload: response,
+        payload: response.data,
       });
+    },
+    *add({ payload, callback }, { call, put }) {
+      const response = yield call(addRule, payload);
+      console.info("add...",response);
+      yield put({
+        type: 'save',
+        payload: response.data,
+      });
+      if (callback) callback();
+    },
+    *remove({ payload, callback }, { call, put }) {
+      const response = yield call(removeRule, payload);
+      yield put({
+        type: 'save',
+        payload: response.data,
+      });
+      if (callback) callback();
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
@@ -29,7 +50,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        list: action.payload,
+        data: action.payload,
       };
     },
     saveCurrentUser(state, action) {

@@ -1,5 +1,6 @@
 import mockjs from 'mockjs';
 import { getRule, postRule } from './mock/rule';
+import { getUserList,postUser } from './mock/user';
 import { getActivities, getNotice, getFakeList } from './mock/api';
 import { getFakeChartData } from './mock/chart';
 import { getProfileBasicData } from './mock/profile';
@@ -10,11 +11,16 @@ import { format, delay } from 'roadhog-api-doc';
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
 
+//是否本地mock数据
+const reqMock = true;
+
+const server = "http://localhost:8080/";
+
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': {
-    $desc: '获取当前用户接口',
+  'GET /api/currentUser': reqMock ? {
+    $desc: "获取当前用户接口",
     $params: {
       pageSize: {
         desc: '分页',
@@ -27,28 +33,18 @@ const proxy = {
       userid: '00000001',
       notifyCount: 12,
     },
-  },
+  } : server,
   // GET POST 可省略
-  'GET /api/users': [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+  'GET /api/users': reqMock ? getUserList : server,
+  'POST /api/user': {
+    $params: {
+      pageSize: {
+        desc: '分页',
+        exp: 2,
+      },
     },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-  ],
+    $body: postUser,
+  },
   'GET /api/project/notice': getNotice,
   'GET /api/activities': getActivities,
   'GET /api/rule': getRule,
@@ -71,30 +67,30 @@ const proxy = {
   'GET /api/fake_chart_data': getFakeChartData,
   'GET /api/profile/basic': getProfileBasicData,
   'GET /api/profile/advanced': getProfileAdvancedData,
-  'POST /api/login/account': (req, res) => {
+  'POST /api/login/account': reqMock ? (req, res) => {
     const { password, userName, type } = req.body;
-    if (password === '888888' && userName === 'admin') {
+    if(password === '888888' && userName === 'admin'){
       res.send({
         status: 'ok',
         type,
-        currentAuthority: 'admin',
+        currentAuthority: 'admin'
       });
-      return;
+      return ;
     }
-    if (password === '123456' && userName === 'user') {
+    if(password === '123456' && userName === 'user'){
       res.send({
         status: 'ok',
         type,
-        currentAuthority: 'user',
+        currentAuthority: 'user'
       });
-      return;
+      return ;
     }
     res.send({
       status: 'error',
       type,
-      currentAuthority: 'guest',
+      currentAuthority: 'guest'
     });
-  },
+  } : server,
   'POST /api/register': (req, res) => {
     res.send({ status: 'ok', currentAuthority: 'user' });
   },

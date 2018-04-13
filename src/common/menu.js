@@ -1,7 +1,23 @@
 import { isUrl } from '../utils/utils';
 
-const menuData = [
-  {
+const menuData = [{
+    name: '身份管理',
+    icon: 'user',
+    path: 'identity',
+    children: [{
+      name: '用户管理',
+      path: 'user',
+    },{
+      name: '角色管理',
+      path: 'role',
+    },{
+      name: '部门管理',
+      path: 'dept',
+    },{
+      name: '应用管理',
+      path: 'app',
+    }],
+  },{
     name: 'dashboard',
     icon: 'dashboard',
     path: 'dashboard',
@@ -19,7 +35,13 @@ const menuData = [
         path: 'workplace',
         // hideInBreadcrumb: true,
         // hideInMenu: true,
-      },
+      },{
+        name: '新增页面',
+        path: 'new',
+      },{
+        name: '测试',
+        path: 'test',
+      }
     ],
   },
   {
