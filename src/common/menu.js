@@ -3,7 +3,7 @@ import { isUrl } from '../utils/utils';
 const menuData = [{
     name: '身份管理',
     icon: 'user',
-    path: 'identity',
+    path: 'manage',
     children: [{
       name: '用户管理',
       path: 'user',

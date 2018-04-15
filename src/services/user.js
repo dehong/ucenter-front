@@ -5,12 +5,15 @@ export async function query(params) {
   return request(`/api/users?${stringify(params)}`);
 }
 
-export async function removeRule(params) {
-  return request('/api/user', {
-    method: 'POST',
+export async function loadUser(id) {
+  return request(`/api/user/${id}`);
+}
+
+export async function removeUser(params) {
+  return request(`/api/user/${params}`, {
+    method: 'DELETE',
     body: {
       ...params,
-      method: 'delete',
     },
   });
 }

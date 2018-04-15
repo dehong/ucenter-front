@@ -1,5 +1,5 @@
-import { query as queryUsers, removeRule, addRule, queryCurrent } from '../services/user';
-
+import { query as queryUsers,loadUser, removeUser, addRule, queryCurrent } from '../services/user';
+import {message } from "antd";
 export default {
   namespace: 'user',
 
@@ -9,6 +9,7 @@ export default {
       list: [],
       pagination: {},
     },
+    formData:{},
   },
 
   effects: {
@@ -30,9 +31,19 @@ export default {
       if (callback) callback();
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
+      const response = yield call(removeUser, payload);
+      if(response.success){
+        message.success("删除成功！");
+      }
+      if (callback) callback();
+    },
+
+    *load({ payload, callback }, { call, put }) {
+      console.info("loadUserloadUserloadUserloadUser");
+      const response = yield call(loadUser, payload);
+      console.info("response",response);
       yield put({
-        type: 'save',
+        type: 'loadUser',
         payload: response.data,
       });
       if (callback) callback();
@@ -51,6 +62,12 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    loadUser(state, action) {
+      return {
+        ...state,
+        formData: action.payload,
       };
     },
     saveCurrentUser(state, action) {

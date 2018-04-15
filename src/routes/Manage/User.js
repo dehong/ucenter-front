@@ -18,7 +18,7 @@ export default class Member extends PureComponent {
               />
             ))
           }
-          <Redirect exact from="/identity/user" to="/identity/user/list" />
+          <Redirect exact from="/manage/user" to="/manage/user/list" />
         </Switch>
       </div>
     );

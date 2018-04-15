@@ -1,4 +1,5 @@
 import { parse } from 'url';
+import moment from 'moment';
 
 // mock userListDataSource
 let actionResult = {
@@ -136,7 +137,62 @@ for (let i = 0; i < 46; i += 1) {
     }
   }
 
+
+  export function getUser(req, res, u) {
+    let url = u;
+    if (!url || Object.prototype.toString.call(url) !== '[object String]') {
+      url = req.url; // eslint-disable-line
+    }
+    
+    var index = url.lastIndexOf("\/");
+    var id  = parseInt(url.substring(index + 1, url.length));
+
+    var data = tableListDataSource.find(function(value, index, arr) {  
+      if(value.id == id){
+        return value;
+      }
+      });
+
+    data = {
+      ...data,
+      email:"12345@qq.com",
+      validDate:new Date('2099-01-01'),
+      gender:0,
+    }
+    
+    actionResult.data = data;
+    const result = {...actionResult};
+  
+    if (res && res.json) {
+      res.json(result);
+    } else {
+      return result;
+    }
+  }
+
+
+  export function removeUser(req, res, u) {
+    let url = u;
+    if (!url || Object.prototype.toString.call(url) !== '[object String]') {
+      url = req.url; // eslint-disable-line
+    }
+    
+    var index = url.lastIndexOf("\/");
+    var id  = parseInt(url.substring(index + 1, url.length));
+
+    tableListDataSource = tableListDataSource.filter(item => item.id != id);
+    actionResult.data = id;
+    const result = {...actionResult};
+  
+    if (res && res.json) {
+      res.json(result);
+    } else {
+      return result;
+    }
+  }
+
   export default {
     getUserList,
     postUser,
+    getUser,
   };

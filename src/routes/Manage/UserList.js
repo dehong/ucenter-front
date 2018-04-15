@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message, Badge, Divider } from 'antd';
+import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message, Badge, Divider, Popconfirm } from 'antd';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { routerRedux } from 'dva/router';
@@ -13,59 +13,6 @@ const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 const statusMap = ['error','success'];
 const status = ['禁用','正常' ];
-const columns = [
-  {
-    title: '工号',
-    dataIndex: 'code',
-  },
-  {
-    title: '账号',
-    dataIndex: 'userName',
-  },
-  {
-    title: '姓名',
-    dataIndex: 'name',
-  },  
-  {
-    title: '手机号',
-    dataIndex: 'phone',
-  },  
-  {
-    title: '科室',
-    dataIndex: 'dept',
-  },
-  {
-    title: '来源',
-    dataIndex: 'userFrom',
-  },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    filters: [
-      {
-        text: status[0],
-        value: 0,
-      },
-      {
-        text: status[1],
-        value: 1,
-      },
-    ],
-    render(val) {
-      return <Badge status={statusMap[val]} text={status[val]} />;
-    },
-  },
-  {
-    title: '操作',
-    render: () => (
-      <Fragment>
-        <a href="">配置</a>
-        <Divider type="vertical" />
-        <a href="">删除</a>
-      </Fragment>
-    ),
-  },
-];
 
 const CreateForm = Form.create()((props) => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
@@ -121,6 +68,86 @@ export default class User extends PureComponent {
       type: 'user/fetch',
       payload: params,
     });
+  }
+
+  getColumns = () =>{
+    return [
+      {
+        title: '工号',
+        dataIndex: 'code',
+      },
+      {
+        title: '账号',
+        dataIndex: 'userName',
+      },
+      {
+        title: '姓名',
+        dataIndex: 'name',
+      },  
+      {
+        title: '手机号',
+        dataIndex: 'phone',
+      },  
+      {
+        title: '科室',
+        dataIndex: 'dept',
+      },
+      {
+        title: '来源',
+        dataIndex: 'userFrom',
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        filters: [
+          {
+            text: status[0],
+            value: 0,
+          },
+          {
+            text: status[1],
+            value: 1,
+          },
+        ],
+        render(val) {
+          return <Badge status={statusMap[val]} text={status[val]} />;
+        },
+      },
+      {
+        title: '操作',
+        render: (text, record) => {
+          const { dispatch, match } = this.props;
+          const { user: {data: {pagination}} } = this.props;
+          return (
+            <Fragment>
+              <a onClick={function () {
+                dispatch(routerRedux.push('/manage/user/edit?id='+record["id"]));
+              }}>编辑</a>
+              <Divider type="vertical"/>
+    
+              <Popconfirm title="确定删除?" onConfirm={function () {
+                dispatch({
+                  type: 'user/remove',
+                  payload: record["id"],
+                  callback:()=>{
+                    const params = {
+                      currentPage: pagination.current,
+                      pageSize: pagination.pageSize,
+                    };
+                    dispatch({
+                      type: 'user/fetch',
+                      payload: params,
+                    });
+                  }
+                });
+              }}>
+                <a href="#">删除</a>
+              </Popconfirm>
+            </Fragment>
+          );
+        }
+      },
+    ];
   }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
@@ -223,12 +250,17 @@ export default class User extends PureComponent {
     });
   }
 
+  handleEdit = () => {
+    const { dispatch, form } = this.props;
+    dispatch(routerRedux.push('/manage/user/edit?id='+record["id"]));
+  }
+
   handleModalVisible = (flag) => {
     // this.setState({
     //   modalVisible: !!flag,
     // });
     const { dispatch, match } = this.props;
-    dispatch(routerRedux.push(`/identity/user/new`));
+    dispatch(routerRedux.push(`/manage/user/new`));
   }
 
   handleAdd = (fields) => {
@@ -314,7 +346,7 @@ export default class User extends PureComponent {
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="账号">
+            <FormItem label="工号">
               {getFieldDecorator('code')(
                 <Input placeholder="请输入" />
               )}
@@ -405,9 +437,10 @@ export default class User extends PureComponent {
               selectedRows={selectedRows}
               loading={loading}
               data={data}
-              columns={columns}
+              columns={this.getColumns()}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
+              rowKey="id"
             />
           </div>
         </Card>
