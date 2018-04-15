@@ -32,7 +32,9 @@ export default {
     },
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(removeUser, payload);
-      if(response.success){
+      console.info("debug:remove response",response);
+      var result = JSON.parse(response);
+      if(result && result.success){
         message.success("删除成功！");
       }
       if (callback) callback();

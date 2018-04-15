@@ -14,6 +14,7 @@ export async function removeUser(params) {
     method: 'DELETE',
     body: {
       ...params,
+      method: 'delete',
     },
   });
 }

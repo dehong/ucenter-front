@@ -183,7 +183,7 @@ for (let i = 0; i < 46; i += 1) {
     tableListDataSource = tableListDataSource.filter(item => item.id != id);
     actionResult.data = id;
     const result = {...actionResult};
-  
+
     if (res && res.json) {
       res.json(result);
     } else {
