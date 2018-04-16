@@ -84,6 +84,12 @@ export const getRouterData = app => {
     '/manage/user/edit': {
       component: dynamicWrapper(app, ['user'], () => import('../routes/Manage/UserEdit')),
     },
+    '/manage/role': {
+      component: dynamicWrapper(app, ['role'], () => import('../routes/Manage/Role')),
+    },
+    '/manage/role/list': {
+      component: dynamicWrapper(app, ['role'], () => import('../routes/Manage/RoleList')),
+    },
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },

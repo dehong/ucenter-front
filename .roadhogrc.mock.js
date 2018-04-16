@@ -1,6 +1,7 @@
 import mockjs from 'mockjs';
 import { getRule, postRule } from './mock/rule';
 import { getUserList,postUser,getUser, removeUser } from './mock/user';
+import { getRoleList,addRole } from './mock/role';
 import { getActivities, getNotice, getFakeList } from './mock/api';
 import { getFakeChartData } from './mock/chart';
 import { getProfileBasicData } from './mock/profile';
@@ -35,10 +36,17 @@ const proxy = {
     },
   } : server,
   // GET POST 可省略
+
+  //用户
   'GET /api/users': reqMock ? getUserList : server,
   'GET /api/user/*': reqMock ? getUser : server,
   'DELETE /api/user/*': reqMock ? removeUser : server,
   
+  //角色
+  'GET /api/roles': reqMock ? getRoleList : server,
+  'POST /api/role': reqMock ? addRole : server,
+
+
   'GET /api/project/notice': getNotice,
   'GET /api/activities': getActivities,
   'GET /api/rule': getRule,

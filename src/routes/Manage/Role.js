@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Route, Redirect, Switch } from 'dva/router';
 import { getRoutes } from '../../utils/utils';
 
-export default class User extends PureComponent {
+export default class Role extends PureComponent {
   render() {
     const { match, routerData } = this.props;
     return (
@@ -18,7 +18,7 @@ export default class User extends PureComponent {
               />
             ))
           }
-          <Redirect exact from="/manage/user" to="/manage/user/list" />
+          <Redirect exact from="/manage/role" to="/manage/role/list" />
         </Switch>
       </div>
     );
