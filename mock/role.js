@@ -15,7 +15,22 @@ for (let i = 0; i < 46; i += 1) {
       id: i,
       name: `角色${i}`,
       description: `角色描述${i}`,
-      authority:'应用1,应用2,应用3,应用4',
+      authority:[{
+        name: "应用1",
+        icon:"https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+      },{
+        name: "应用2",
+        icon:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+      },{
+        name: "应用3",
+        icon:"https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png",
+      },{
+        name: "应用4",
+        icon:"https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png",
+      },{
+        name: "应用5",
+        icon:"https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png",
+      },],
     });
   }
 
@@ -115,7 +130,7 @@ for (let i = 0; i < 46; i += 1) {
 
     const body = (b && b.body) || req.body;
     const { name, description } = body;
-    
+
     tableListDataSource = tableListDataSource.filter(item => item.id != id);
     actionResult.data = id;
     const result = {...actionResult};

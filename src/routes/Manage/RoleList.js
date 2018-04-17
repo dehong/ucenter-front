@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message, Badge, Divider, Popconfirm, Table } from 'antd';
+import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message, Badge, Divider, Popconfirm, Table,Avatar  } from 'antd';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { routerRedux } from 'dva/router';
@@ -59,6 +59,7 @@ const CreateForm = Form.create()((props) => {
   );
 });
 
+
 @connect(({ role, loading }) => ({
   role,
   loading: loading.models.role,
@@ -83,19 +84,36 @@ export default class RoleList extends PureComponent {
     return [
       {
         title: '角色名称',
+        width: '15%',
         dataIndex: 'name',
       },
       {
         title: '描述',
+        width: '20%',
         dataIndex: 'description',
       },
       {
         title: '权限',
+        width: '50%',
         dataIndex: 'authority',
+        render: (text, record) => {
+          const {authority : apps} =  record;
+          const avatarList = [];
+          if(apps){
+            apps.forEach(app => {
+              avatarList.push(
+                <Avatar style={{ marginLeft: 8 }} shape={'square'} src={app.icon} />
+              );
+            });
+            return (
+              <div>{avatarList}</div>
+            );
+          }
+        }
       },
       {
         title: '操作',
-        width: 120,
+        width: '15%',
         align: 'center',
         render: (text, record) => {
           const { dispatch, match } = this.props;
