@@ -271,7 +271,7 @@ export default class RoleList extends PureComponent {
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
               </Button>
-              <Button onClick={() => this.handleModalVisible(true)}>
+              <Button>
                 删除
               </Button>
             </div>
