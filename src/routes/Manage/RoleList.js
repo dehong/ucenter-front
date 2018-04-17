@@ -102,7 +102,7 @@ export default class RoleList extends PureComponent {
           if(apps){
             apps.forEach(app => {
               avatarList.push(
-                <Avatar style={{ marginLeft: 8 }} shape={'square'} src={app.icon} />
+                <Avatar key={app.id} style={{ marginLeft: 8 }} shape={'square'} src={app.icon} />
               );
             });
             return (
@@ -121,7 +121,7 @@ export default class RoleList extends PureComponent {
           return (
             <Fragment>
               <a onClick={function () {
-                dispatch(routerRedux.push('/manage/user/edit?id='+record["id"]));
+                console.info("debug:formValues",this.state.formValues);
               }}>编辑</a>
               <Divider type="vertical"/>
     
@@ -285,7 +285,7 @@ export default class RoleList extends PureComponent {
               rowKey="id"
             /> */}
             <Table 
-            rowKey = "id"
+            rowKey = {"id"}
             loading={loading}
             dataSource={dataSource} 
             columns={this.getColumns()}

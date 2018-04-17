@@ -16,18 +16,23 @@ for (let i = 0; i < 46; i += 1) {
       name: `角色${i}`,
       description: `角色描述${i}`,
       authority:[{
+        id: 1,
         name: "应用1",
         icon:"https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
       },{
+        id: 2,
         name: "应用2",
         icon:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
       },{
+        id: 3,
         name: "应用3",
         icon:"https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png",
       },{
+        id: 4,
         name: "应用4",
         icon:"https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png",
       },{
+        id: 5,
         name: "应用5",
         icon:"https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png",
       },],
